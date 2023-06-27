@@ -1,10 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:trattamento/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:trattamento/models/order_model/order_model.dart';
 
-class OrderScreen extends StatelessWidget {
+class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
 
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +25,9 @@ class OrderScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: Stream.fromFuture(FirebaseFirestoreHelper.instance.getUserOrder(),),
+        stream: Stream.fromFuture(
+          FirebaseFirestoreHelper.instance.getUserOrder(),
+        ),
         // future: FirebaseFirestoreHelper.instance.getUserOrder(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -34,9 +42,9 @@ class OrderScreen extends StatelessWidget {
               child: Text("No Order Found"),
             );
           }
-          
+
           return Padding(
-            padding: const EdgeInsets.only(bottom:50.0),
+            padding: const EdgeInsets.only(bottom: 50.0),
             child: ListView.builder(
               itemCount: snapshot.data!.length,
               padding: const EdgeInsets.all(12.0),
@@ -46,10 +54,12 @@ class OrderScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: ExpansionTile(
                     tilePadding: EdgeInsets.zero,
-                    collapsedShape:  RoundedRectangleBorder(
-                        side: BorderSide(color:Theme.of(context).primaryColor, width: 2.3)),
-                    shape:  RoundedRectangleBorder(
-                        side: BorderSide(color:Theme.of(context).primaryColor, width: 2.3)),
+                    collapsedShape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 2.3)),
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 2.3)),
                     title: Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
@@ -57,7 +67,8 @@ class OrderScreen extends StatelessWidget {
                         Container(
                           height: 120,
                           width: 120,
-                          color:Theme.of(context).primaryColor.withOpacity(0.5),
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
                           child: Image.network(
                             orderModel.products[0].image,
                           ),
@@ -68,7 +79,9 @@ class OrderScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                orderModel.products[0].name,
+                                orderModel.products.isNotEmpty
+                                    ? orderModel.products[0].name
+                                    : '',
                                 style: const TextStyle(
                                   fontSize: 12.0,
                                 ),
@@ -92,7 +105,7 @@ class OrderScreen extends StatelessWidget {
                                       ],
                                     ),
                               Text(
-                                "Total Price: \$${orderModel.totalPrice.toString()}",
+                                "Total Price: ${orderModel.totalPrice.toString()}\LE",
                                 style: const TextStyle(
                                   fontSize: 12.0,
                                 ),
@@ -106,6 +119,34 @@ class OrderScreen extends StatelessWidget {
                                   fontSize: 12.0,
                                 ),
                               ),
+                              const SizedBox(
+                                height: 12.0,
+                              ),
+                              orderModel.status == "Pending" ||
+                                      orderModel.status == "Delivery"
+                                  ? ElevatedButton(
+                                      onPressed: () async {
+                                        await FirebaseFirestoreHelper.instance
+                                            .updateOrderByAdmin(
+                                                orderModel, "Cancel");
+                                        orderModel.status = "Cancel";
+                                        setState(() {});
+                                      },
+                                      child: const Text("Cancel Order"),
+                                    )
+                                  : SizedBox.fromSize(),
+                              orderModel.status == "Delivery"
+                                  ? ElevatedButton(
+                                      onPressed: () async {
+                                        await FirebaseFirestoreHelper.instance
+                                            .updateOrderByAdmin(
+                                                orderModel, "Completed");
+                                        orderModel.status = "Completed";
+                                        setState(() {});
+                                      },
+                                      child: const Text("Delivered Order"),
+                                    )
+                                  : SizedBox.fromSize(),
                             ],
                           ),
                         ),
@@ -114,7 +155,7 @@ class OrderScreen extends StatelessWidget {
                     children: orderModel.products.length > 1
                         ? [
                             const Text("Details"),
-                             Divider(color:Theme.of(context).primaryColor),
+                            Divider(color: Theme.of(context).primaryColor),
                             ...orderModel.products.map((singleProduct) {
                               return Padding(
                                 padding:
@@ -129,7 +170,9 @@ class OrderScreen extends StatelessWidget {
                                         Container(
                                           height: 80,
                                           width: 80,
-                                          color:Theme.of(context).primaryColor.withOpacity(0.5),
+                                          color: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(0.5),
                                           child: Image.network(
                                             singleProduct.image,
                                           ),
@@ -173,7 +216,8 @@ class OrderScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                     Divider(color: Theme.of(context).primaryColor),
+                                    Divider(
+                                        color: Theme.of(context).primaryColor),
                                   ],
                                 ),
                               );

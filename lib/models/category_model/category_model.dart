@@ -28,4 +28,12 @@ class CategoryModel {
         "image": image,
         "name": name,
       };
+
+  ////////////admin panal
+  CategoryModel copyWith({
+    String? name,
+    String? image,
+  }) =>
+      CategoryModel(
+          image: image ?? this.image, id: id, name: name ?? this.name);
 }

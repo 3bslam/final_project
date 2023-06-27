@@ -39,46 +39,46 @@ class _AccountScreenState extends State<AccountScreen> {
         children: [
           Expanded(
             child: Column(
-  children: [
-    appProvider.getUserInformation.image == null
-        ? const Icon(
-            Icons.person_outline,
-            size: 120,
-          )
-        : CircleAvatar(
-            backgroundImage:
-                NetworkImage(appProvider.getUserInformation.image!),
-            radius: 60,
-          ),
-    Text(
-      appProvider.getUserInformation.name,
-      style: const TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    Text(
-      appProvider.getUserInformation.email,
-    ),
-    const SizedBox(
-      height: 5.0,
-    ),
-    Expanded(
-      child: SizedBox(
-        width: 130,
-        child: PrimaryButton(
-          title: "Edit Profile",
-          onPressed: () {
-            Routes.instance.push(
-              widget: const EditProfile(),
-              context: context,
-            );
-          },
-        ),
-      ),
-    ),
-  ],
-),
+              children: [
+                appProvider.getUserInformation!.image == null
+                    ? const Icon(
+                        Icons.person_outline,
+                        size: 120,
+                      )
+                    : CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            appProvider.getUserInformation!.image!),
+                        radius: 60,
+                      ),
+                Text(
+                  appProvider.getUserInformation!.name,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  appProvider.getUserInformation!.email,
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 130,
+                    child: PrimaryButton(
+                      title: "Edit Profile",
+                      onPressed: () {
+                        Routes.instance.push(
+                          widget: const EditProfile(),
+                          context: context,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             flex: 2,

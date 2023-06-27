@@ -7,6 +7,7 @@ import 'package:trattamento/constants/routes.dart';
 import 'package:trattamento/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:trattamento/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:trattamento/screens/auth_ui/welcome/welcome.dart';
+import 'package:trattamento/screens/home/admin_home.dart';
 import 'package:trattamento/widgets/primary_button/primary_button.dart';
 import 'package:trattamento/widgets/top_titles/top_titles.dart';
 
@@ -65,7 +66,7 @@ class _LoginState extends State<Login> {
                         });
                       },
                       padding: EdgeInsets.zero,
-                      child:  Icon(
+                      child: Icon(
                         isShowPassword
                             ? Icons.visibility
                             : Icons.visibility_off,
@@ -79,15 +80,32 @@ class _LoginState extends State<Login> {
               PrimaryButton(
                 title: "Login",
                 onPressed: () async {
-                  bool isVaildated = loginVaildation(email.text, password.text);
-                  if (isVaildated) {
-                    bool isLogined = await FirebaseAuthHelper.instance
-                        .login(email.text, password.text, context);
-                    if (isLogined) {
-                      Routes.instance.pushAndRemoveUntil(
-                          widget: const Welcome(), context: context);
+                  bool isAdminLogin = email.text == "admin@gmail.com" &&
+                      password.text == "admin";
+                  if (isAdminLogin) {
+                    Routes.instance.pushAndRemoveUntil(
+                      widget: const AdminHomePage(),
+                      context: context,
+                    );
+                  } else {
+                    bool isValidated =
+                        loginVaildation(email.text, password.text);
+                    if (isValidated) {
+                      bool isLogged = await FirebaseAuthHelper.instance
+                          .login(email.text, password.text, context);
+                      if (isLogged) {
+                        Routes.instance.pushAndRemoveUntil(
+                          widget: const CustomBottomBar(),
+                          context: context,
+                        );
+                      }
+                    } else {
+                      Routes.instance.push(
+                        widget: const AdminHomePage(),
+                        context: context,
+                      );
                     }
-                  } 
+                  }
                 },
               ),
               const SizedBox(

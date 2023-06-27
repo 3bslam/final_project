@@ -70,7 +70,7 @@ class _EditProfileState extends State<EditProfile> {
           TextFormField(
             controller: textEditingController,
             decoration: InputDecoration(
-              hintText: appProvider.getUserInformation.name,
+              hintText: appProvider.getUserInformation?.name,
             ),
           ),
           const SizedBox(
@@ -79,10 +79,9 @@ class _EditProfileState extends State<EditProfile> {
           PrimaryButton(
             title: "Update",
             onPressed: () async {
-              UserModel userModel = appProvider.getUserInformation
-                  .copyWith(name: textEditingController.text);
-              appProvider.updateUserInfoFirebase(context, userModel, image);
-            
+              UserModel? userModel = appProvider.getUserInformation
+                  ?.copyWith(name: textEditingController.text);
+              appProvider.updateUserInfoFirebase(context, userModel!, image);
             },
           ),
         ],

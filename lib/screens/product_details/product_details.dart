@@ -122,7 +122,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ],
               ),
-               //const Spacer(),
+              //const Spacer(),
               const SizedBox(
                 height: 24.0,
               ),
