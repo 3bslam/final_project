@@ -3,25 +3,25 @@ import 'package:provider/provider.dart';
 import 'package:trattamento/constants/routes.dart';
 import 'package:trattamento/models/product_model/product_model.dart';
 import 'package:trattamento/screens/product_details/edit_product.dart';
-
 import '../provider/app_provider.dart';
 
 class SingleProductView extends StatefulWidget {
   const SingleProductView({
-    super.key,
+    Key? key,
     required this.singleProduct,
     required this.index,
-  });
+  }) : super(key: key);
 
   final ProductModel singleProduct;
   final int index;
 
   @override
-  State<SingleProductView> createState() => _SingleProductViewState();
+  _SingleProductViewState createState() => _SingleProductViewState();
 }
 
 class _SingleProductViewState extends State<SingleProductView> {
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     AppProvider appProvider = Provider.of<AppProvider>(context);
@@ -31,14 +31,13 @@ class _SingleProductViewState extends State<SingleProductView> {
       elevation: 0.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Stack(
-        // alignment: Alignment.topRight,
         children: [
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 12.0,
+                  height: 1.0,
                 ),
                 Image.network(
                   widget.singleProduct.image,
@@ -61,60 +60,66 @@ class _SingleProductViewState extends State<SingleProductView> {
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+                Text(
+                  widget.singleProduct.quantity.toString() + ' left',
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 6, 66, 60),
                   ),
                 ),
               ],
             ),
           ),
           Positioned(
-            right: 0.0,
+            left: 0.0,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IgnorePointer(
-                    ignoring: isLoading,
-                    child: GestureDetector(
-                      onTap: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        await appProvider
-                            .deletProductFromFirebase(widget.singleProduct);
-                        setState(() {
-                          isLoading = false;
-                        });
-                      },
-                      child: isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                    ),
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await appProvider
+                          .deletProductFromFirebase(widget.singleProduct);
+                      setState(() {
+                        isLoading = false;
+                      });
+                    },
+                    child: isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
                   ),
                   const SizedBox(
-                    width: 12.0,
+                    width: 100.0,
                   ),
                   GestureDetector(
                     onTap: () {
                       Routes.instance.push(
-                          widget: EditProduct(
-                              productModel: widget.singleProduct,
-                              index: widget.index),
-                          context: context);
+                        widget: EditProduct(
+                          productModel: widget.singleProduct,
+                          index: widget.index,
+                        ),
+                        context: context,
+                      );
                     },
                     child: Icon(Icons.edit),
                   ),
-                  const SizedBox(
-                    width: 12.0,
-                  )
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

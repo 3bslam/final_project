@@ -19,6 +19,7 @@ class OrderList extends StatelessWidget {
       // Handle null or empty list case
       return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.teal,
           title: Text(
             "${title} Order List",
             style: TextStyle(color: Colors.black),
@@ -32,6 +33,7 @@ class OrderList extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: Text(
           "${title} Order List",
           style: TextStyle(color: Colors.black),

@@ -32,7 +32,7 @@ class _CartItemCheckoutState extends State<CartItemCheckout> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          "CartItemCheckout",
+          "Cart Item Checkout",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -63,7 +63,7 @@ class _CartItemCheckoutState extends State<CartItemCheckout> {
                       });
                     },
                   ),
-                  const Icon(Icons.money),
+                  const Icon(Icons.delivery_dining),
                   const SizedBox(
                     width: 12.0,
                   ),
@@ -98,7 +98,7 @@ class _CartItemCheckoutState extends State<CartItemCheckout> {
                       });
                     },
                   ),
-                  const Icon(Icons.money),
+                  const Icon(Icons.payment),
                   const SizedBox(
                     width: 12.0,
                   ),
@@ -133,7 +133,6 @@ class _CartItemCheckoutState extends State<CartItemCheckout> {
                     });
                   }
                 } else {
-                 
                   int value = double.parse(
                           appProvider.totalPriceBuyProductList().toString())
                       .round()

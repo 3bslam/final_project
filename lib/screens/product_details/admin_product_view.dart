@@ -23,6 +23,7 @@ class _AdminProductViewState extends State<AdminProductView> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: const Text(
           "Products view",
           style: TextStyle(color: Colors.black),

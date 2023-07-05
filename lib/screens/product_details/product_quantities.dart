@@ -35,6 +35,7 @@ class _LowQuantityProductsScreenState extends State<LowQuantityProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: Text(
           'Low Quantity Products',
           style: TextStyle(color: Colors.black),
@@ -85,7 +86,7 @@ class _LowQuantityProductsScreenState extends State<LowQuantityProductsScreen> {
                       ),
                     ),
                     Text(
-                      "Remaining Quantity: $remainingQty", // Display remainingQty
+                      "Remaining Quantity: ${product.quantity}", // Display remainingQty
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18.0,

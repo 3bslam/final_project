@@ -91,8 +91,12 @@ bool loginVaildation(String email, String password) {
 }
 
 bool signUpVaildation(
-    String email, String password, String name, String phone) {
-  if (email.isEmpty && password.isEmpty && name.isEmpty && phone.isEmpty) {
+    String email, String password, String name, String phone, String address) {
+  if (email.isEmpty &&
+      password.isEmpty &&
+      name.isEmpty &&
+      phone.isEmpty &&
+      address.isEmpty) {
     showMessage("All Fields are empty");
     return false;
   } else if (name.isEmpty) {
@@ -103,6 +107,9 @@ bool signUpVaildation(
     return false;
   } else if (phone.isEmpty) {
     showMessage("Phone is Empty");
+    return false;
+  } else if (address.isEmpty) {
+    showMessage("Address is Empty");
     return false;
   } else if (password.isEmpty) {
     showMessage("Password is Empty");

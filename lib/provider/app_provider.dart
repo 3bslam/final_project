@@ -249,6 +249,10 @@ class AppProvider with ChangeNotifier {
     CategoryModel categoryModel =
         await FirebaseFirestoreHelper.instance.addSingleCategory(image, name);
 
+    // Create the "products" collection for the newly added category
+    await FirebaseFirestoreHelper.instance
+        .createProductsCollection(categoryModel.id);
+
     _categoriesList.add(categoryModel);
     notifyListeners();
   }

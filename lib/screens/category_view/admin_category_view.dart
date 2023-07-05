@@ -17,6 +17,7 @@ class AdminCategoriesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: const Text(
           "Categories view",
           style: TextStyle(color: Colors.black),
@@ -33,7 +34,7 @@ class AdminCategoriesView extends StatelessWidget {
       ),
       body: Consumer<AppProvider>(builder: (context, value, child) {
         // Call the callBackFunction to fetch categories
-        value.callBackFunction();
+        // value.callBackFunction();
 
         return Padding(
           padding: const EdgeInsets.all(12.0),

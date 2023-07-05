@@ -60,7 +60,7 @@ class _CheckoutState extends State<Checkout> {
                       });
                     },
                   ),
-                  const Icon(Icons.money),
+                  const Icon(Icons.delivery_dining),
                   const SizedBox(
                     width: 12.0,
                   ),
@@ -95,7 +95,7 @@ class _CheckoutState extends State<Checkout> {
                       });
                     },
                   ),
-                  const Icon(Icons.money),
+                  const Icon(Icons.payment),
                   const SizedBox(
                     width: 12.0,
                   ),
@@ -133,7 +133,6 @@ class _CheckoutState extends State<Checkout> {
                     });
                   }
                 } else {
-                 
                   int value = double.parse(
                           appProvider.totalPriceBuyProductList().toString())
                       .round()

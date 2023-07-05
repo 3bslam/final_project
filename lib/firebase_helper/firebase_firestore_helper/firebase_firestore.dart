@@ -210,6 +210,18 @@ class FirebaseFirestoreHelper {
     }
   }
 
+  Future<void> createProductsCollection(String categoryId) async {
+    try {
+      CollectionReference productsRef = _firebaseFirestore
+          .collection("categories")
+          .doc(categoryId)
+          .collection("products");
+      // Perform any additional operations on the "products" collection, if needed
+    } catch (e) {
+      print("Failed to create 'products' collection: ${e.toString()}");
+    }
+  }
+
   Future<void> updateSingleCategory(CategoryModel categoryModel) async {
     try {
       await _firebaseFirestore
@@ -340,23 +352,23 @@ class FirebaseFirestoreHelper {
   }
 
   Future<List<OrderModel>> getPendingOrder() async {
-    QuerySnapshot<Map<String, dynamic>> deliveryOrder = await _firebaseFirestore
-        .collection("orders")
-        .where("status", isEqualTo: "Pending")
-        .get();
-    List<OrderModel> deliveryOrderList =
-        deliveryOrder.docs.map((e) => OrderModel.fromJson(e.data())).toList();
-    return deliveryOrderList;
-  }
-
-  Future<List<OrderModel>> getDeliveryOrder() async {
     QuerySnapshot<Map<String, dynamic>> pendingOrder = await _firebaseFirestore
         .collection("orders")
-        .where("status", isEqualTo: "Delivery")
+        .where("status", isEqualTo: "Pending")
         .get();
     List<OrderModel> pendingOrderList =
         pendingOrder.docs.map((e) => OrderModel.fromJson(e.data())).toList();
     return pendingOrderList;
+  }
+
+  Future<List<OrderModel>> getDeliveryOrder() async {
+    QuerySnapshot<Map<String, dynamic>> deliveryOrder = await _firebaseFirestore
+        .collection("orders")
+        .where("status", isEqualTo: "Delivery")
+        .get();
+    List<OrderModel> deliveryOrderList =
+        deliveryOrder.docs.map((e) => OrderModel.fromJson(e.data())).toList();
+    return deliveryOrderList;
   }
 
   Future<void> updateOrderByAdmin(OrderModel orderModel, String status) async {

@@ -8,6 +8,7 @@ import 'package:trattamento/firebase_helper/firebase_storage_helper/firebase_sto
 import 'package:trattamento/provider/app_provider.dart';
 import 'package:trattamento/screens/auth_ui/login/login.dart';
 import 'package:trattamento/screens/auth_ui/welcome/welcome.dart';
+import 'package:trattamento/screens/custom_bottom_bar/custom_bottom_bar.dart';
 import 'package:trattamento/screens/home/admin_home.dart';
 //import 'package:trattamento/screens/chat%20screen/Messages.dart';
 
@@ -36,9 +37,9 @@ class MyApp extends StatelessWidget {
         home: StreamBuilder(
           stream: FirebaseAuthHelper.instance.getAuthChange,
           builder: (context, snapshot) {
-            // if (snapshot.hasData) {
-            //  return const CustomBottomBar();
-            // }
+            if (snapshot.hasData) {
+              return const CustomBottomBar();
+            }
             return const Welcome();
           },
         ),

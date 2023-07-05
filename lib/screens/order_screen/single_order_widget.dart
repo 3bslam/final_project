@@ -52,7 +52,9 @@ class _SingleOrderWidgetState extends State<SingleOrderWidget> {
                     width: 120,
                     color: Theme.of(context).primaryColor.withOpacity(0.5),
                     child: Image.network(
-                      widget.orderModel.products[0].image,
+                      widget.orderModel.products.isNotEmpty
+                          ? widget.orderModel.products[0].image
+                          : '',
                     ),
                   ),
                   Padding(
@@ -61,7 +63,9 @@ class _SingleOrderWidgetState extends State<SingleOrderWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.orderModel.products[0].name,
+                          widget.orderModel.products.isNotEmpty
+                              ? widget.orderModel.products[0].name
+                              : '',
                           style: const TextStyle(
                             fontSize: 12.0,
                           ),
@@ -119,11 +123,19 @@ class _SingleOrderWidgetState extends State<SingleOrderWidget> {
                               ),
                             ),
                             onPressed: () async {
-                              await FirebaseFirestoreHelper.instance
-                                  .updateOrder(widget.orderModel, "Delivery");
-                              appProvider.getPendingOrderList
-                                  .remove(widget.orderModel);
-                              appProvider.updatePendingOrder(widget.orderModel);
+                              if (widget.orderModel.status == "Pending") {
+                                widget.orderModel.status = "Accepted";
+                                await FirebaseFirestoreHelper.instance
+                                    .updateOrder(widget.orderModel, "Accepted");
+                                appProvider.updateCancelPendingOrder(
+                                    widget.orderModel);
+                              } else {
+                                widget.orderModel.status = "Accepted";
+                                await FirebaseFirestoreHelper.instance
+                                    .updateOrder(widget.orderModel, "Accepted");
+                                appProvider.updateCancelDeliveryOrder(
+                                    widget.orderModel);
+                              }
                               setState(() {
                                 isButtonVisible = false;
                               });
@@ -179,10 +191,12 @@ class _SingleOrderWidgetState extends State<SingleOrderWidget> {
                 ],
               ),
               children: [
-                if (widget.orderModel.products.length > 1)
-                  const Text("Details"),
-                if (widget.orderModel.products.length > 1)
-                  Divider(color: Theme.of(context).primaryColor),
+                if (widget.orderModel.products.isNotEmpty)
+                  if (widget.orderModel.products.length > 1)
+                    const Text("Details"),
+                if (widget.orderModel.products.isNotEmpty)
+                  if (widget.orderModel.products.length > 1)
+                    Divider(color: Theme.of(context).primaryColor),
                 ...widget.orderModel.products.map((singleProduct) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 12.0, top: 6.0),

@@ -48,9 +48,9 @@ class _EditProduct extends State<EditProduct> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.teal,
         title: const Text(
-          "Category Edit",
+          "Product Edit",
           style: TextStyle(
             color: Colors.black,
           ),
